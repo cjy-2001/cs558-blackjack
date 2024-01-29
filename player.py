@@ -95,10 +95,14 @@ class Player:
     def should_hit(self, player_value: int, dealer_face_value: int) -> bool:
         if player_value >= 21:
             return False
+        
+        if player_value <= 11:
+            return True 
+        
         # Check if there's enough data in the matrix to make a decision
-        if self.matrix[player_value][dealer_face_value]['counts'] > 500:
+        if self.matrix[player_value][dealer_face_value]['counts'] > 200:
             win_rate = self.matrix[player_value][dealer_face_value]['wins'] / self.matrix[player_value][dealer_face_value]['counts']
-            return win_rate >= 0.4
+            return win_rate >= THRESHOLD_WIN_RATE
         else:
             # Default strategy if not enough data
             return player_value < 17
@@ -138,10 +142,13 @@ class Player:
             result['counts'] += 1
 
             # Deal another card to player
+            if player_value == 21:
+                continue
+
             player_hand.add_card(deck.deal_card())
             player_value = player_hand.get_value()
 
-            if player_value >= 21:
+            if player_value > 21:
                 continue
             else:
                 outer_break = False
@@ -171,7 +178,7 @@ class Player:
         
         win_rate = self.matrix[player_value][dealer_face_value]['wins'] / self.matrix[player_value][dealer_face_value]['counts']
         
-        return win_rate >= 0.4
+        return win_rate >= THRESHOLD_WIN_RATE
         
 
     def play(self, trials: int) -> float:
@@ -188,8 +195,11 @@ class Player:
             player_hand.add_card(deck.deal_card())
             dealer_hand.add_card(deck.deal_card())
 
-            while self.hitme(player_hand, dealer_hand.cards[0]):
+            player_value = player_hand.get_value()
+
+            while player_value <= 11 or self.hitme(player_hand, dealer_hand.cards[0]):
                 player_hand.add_card(deck.deal_card())
+                player_value = player_hand.get_value()
 
             if player_hand.get_value() <= 21: 
                 self.dealer_turn(deck, dealer_hand)
@@ -219,15 +229,14 @@ class Player:
                         print("N/A\t", end="")
                 print()
 
+
 def main():
     player = Player()
     
-    num_trials = 100000
+    num_trials = 1000000
     player.sim(num_trials)
     player.print_matrix()
     print(player.play(1000))
-    # win_rate = player.play(100)
-    # print(f"Winning rate over 100 hands: {win_rate*100}%")
 
 if __name__ == '__main__':
     main()
