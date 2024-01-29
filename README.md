@@ -1,28 +1,34 @@
-# cs558-blackjack
-CS 458/558 - Problem Set 1 (blackjack)
+# CS 558 Blackjack Simulation
 
-This program implements a pretty vanilla form of blackjack. You cannot double down, buy insurance, or count cards. There is one deck and it is reshuffled before every hand. The dealer has no discretion. She has to stay on 17 or higher.
+This repository contains a Python simulation for a simplified version of blackjack, designed as a solution for Problem Set 1 in the CS 558 course. The simulation includes an automated player that makes decisions based on a Monte Carlo simulation of blackjack strategies.
 
-For this code, the human is in the loop. The player has to click the hit or stand buttons. Your job is to automate this process.
+## Project Structure
 
-Create a function hitme(playerhand, dealerfacecard) which returns a boolean value, true or false, specifying whether the player should ask for another card or not. That is, after the cards are initially dealt, the program will call hitme and either ask for another card or stand - untouched by human hands.
+The project is structured as follows:
 
-Even though the example code uses graphics, your code should not. It should be built for speed, not looks.
+- `card.py`: Defines the `Card` class, which represents a playing card with suit and rank.
+- `config.py`: Contains global variables such as suits, ranks, and card values.
+- `deck.py`: Defines the `Deck` class, which represents a deck of playing cards.
+- `hand.py`: Defines the `Hand` class, which represents a player's hand in the game.
+- `player.py`: Contains the `Player` class with methods to simulate blackjack strategies, play games, and report results.
+- `player_draft.py`: An alternative or draft implementation of the `Player` class.
 
-The hitme function will simply perform a table look-up. You will have a 2 dimensional matrix comprising the optimal strategy for all possible combinations of player hands and dealer face cards. The values in the matrix will simply be true or false. For example,
+## Installation
 
-hitme(12, 1) ==> true
-If your hand value is 12 and the dealer has an ace, you should ask for another card.
-hitme(18, 4) ==> false
-If your hand value is 18 and the dealer shows a four, you should stay put.
-Actually, it is not up to you to populate the values of the table through dint of insight. Rather, you will write another function sim(trials), which performs Monte Carlo simulation.
+To run this simulation, you need Python 3 installed on your system. Clone the repository to your local machine, navigate to the cloned directory, and you are ready to run the simulation.
 
-The sim function will perform a boatload of trials and produce as output a matrix of probabilities. For example, in the cell corresponding to a player hand of 18 and a dealer face card of 4, the value may be 235 / 978 meaning that this combination occurred 978 times in the simulation and in only 235 times did the player win if she asked for another card. You would then convert that matrix to boolean values, based on some threshold ratio value. The normal approach would be to use 50%, but you may decide to use a different value.
+```bash
+git clone [repository-url]
+cd cs558-blackjack
+python player.py
+```
 
-Once you have your hitme table installed, run your own simulated games, keeping track of the win/loss ratio. Report your results for simulations of at least 100,000 hands.
+## Function Descriptions
+- sim(trials): Performs a Monte Carlo simulation to determine optimal playing strategies.
+- hitme(playerhand, dealerfacecard): Determines whether the player should hit based on the hand value and dealer's face card.
+- play(trials): Plays out a specified number of hands and returns the overall winning percentage.
+- print_matrix(): Outputs the results of the simulation in a matrix format.
 
-Finally, write a function play(trials) which will play the given number of hands and return your overall winning percentage.
+## Simulation Results
 
-You should submit one file: player.py In addition, you should hand in a README file which explains what function does what, as well as a transcript including the output of Monte Carlo simulation, and the summary output of 100,000 game playing trials - how many games the player won. In the past when giving assignments involving automated game playing, I have awarded a prize to the most successful program. Keep that in mind.
-
-The process for creating this program is similar to most large scale decision systems: caching the results of a massive simulation that can enable rapid, real time decisions.
+After running at least 100,000 hands, the simulation will provide a matrix of win/loss probabilities and the player's overall winning percentage. These results are based on the optimal strategies determined through the Monte Carlo simulation.

@@ -97,6 +97,9 @@ class Player:
         if player_value > 21:
             return False
         
+        if player_value <= 11:
+            return True
+        
         win_rate = self.matrix[player_value][dealer_face_value]['wins'] / self.matrix[player_value][dealer_face_value]['counts']
         
         return win_rate >= THRESHOLD_WIN_RATE
@@ -116,11 +119,8 @@ class Player:
             player_hand.add_card(deck.deal_card())
             dealer_hand.add_card(deck.deal_card())
 
-            player_value = player_hand.get_value()
-
-            while player_value <= 11 or self.hitme(player_hand, dealer_hand.cards[0]):
+            while self.hitme(player_hand, dealer_hand.cards[0]):
                 player_hand.add_card(deck.deal_card())
-                player_value = player_hand.get_value()
 
             if player_hand.get_value() <= 21: 
                 self.dealer_turn(deck, dealer_hand)
