@@ -236,7 +236,7 @@ def main():
     num_trials = 1000000
     player.sim(num_trials)
     player.print_matrix()
-    print(player.play(10000))
+    print(player.play(100000))
 
 if __name__ == '__main__':
     main()

@@ -1,3 +1,5 @@
+# Functions
+
 - should_hit function determines whether the player should hit based on the player's current hand value, the dealer's visible card value, and historical win rates stored in the strategy matrix. After collecting enough data, the function uses a threshold win rate (THRESHOLD_WIN_RATE) to decide if hitting has historically led to winning outcomes in similar situations.
 
 - dealer_turn simulates the dealer's turn, where the dealer keeps drawing cards from the deck until the hand value is at least 17. This is in line with standard Blackjack dealer rules.
